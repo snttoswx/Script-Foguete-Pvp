@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snttoswx Gen Trimensal</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/8c/Lionel-Messi-Argentina-2022.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 0 0 10px #000;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        .input-box {
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
+        }
+
+        .input-box input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #111;
+            color: #ff0000;
+            outline: none;
+            width: 100%;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .output-box {
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.5s;
+        }
+
+        .output-box textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #111;
+            color: #ffffff;
+            resize: none;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #ffd700, #ff8000);
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2s;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 1);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>Gera uns código aí, vai que você acha um</h1>
+        <div class="input-box fade-in">
+            <input type="number" id="quantity" placeholder="Digite Quantos Vc Quer">
+        </div>
+        <div class="output-box fade-in">
+            <textarea id="codes" placeholder="Nitro mensal..." readonly></textarea>
+        </div>
+        <button class="btn fade-in" onclick="generateCodes()">Gerar</button>
+        <button class="btn fade-in" onclick="copyToClipboard()">Copiar</button>
+        <button class="btn fade-in" onclick="downloadTxtFile()">Baixar Arquivo .txt</button>
+    </div>
+
+    <script>
+        async function generateCodes() {
+            const quantity = document.getElementById('quantity').value;
+            const output = document.getElementById('codes');
+            const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const tamanho = 24;
+            let codigos = [];
+
+            for (let i = 0; i < quantity; i++) {
+                let codigo = '';
+                for (let j = 0; j < tamanho; j++) {
+                    const indice = Math.floor(Math.random() * caracteres.length);
+                    codigo += caracteres.charAt(indice);
+                }
+                codigos.push(`https://discord.com/billing/promotions/${codigo}`);
+            }
+
+            output.value = codigos.join('\n');
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById('codes');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("Códigos copiados, boa sorte!");
+            }).catch(err => {
+                alert("Erro ao copiar os códigos: ", err);
+            });
+        }
+
+        function downloadTxtFile() {
+            const textToSave = document.getElementById("codes").value;
+            const hiddenElement = document.createElement("a");
+            hiddenElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(textToSave);
+            hiddenElement.target = "_blank";
+            hiddenElement.download = "codigos_nitro.txt";
+            hiddenElement.click();
+        }
+    </script>
+</body>
+</html>
